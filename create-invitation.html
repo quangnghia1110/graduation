@@ -127,50 +127,30 @@
             const scriptUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
             
             try {
-                // Method 1: Using direct JSON approach with a hidden form
-                const jsonData = {
-                    id: invitationId,
-                    name: guestName
-                };
+                // Create the invitation link first (don't wait for sheet)
+                const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
                 
-                // Create a hidden form that will submit the JSON as a text field
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = scriptUrl;
-                form.target = '_blank';
-                form.style.display = 'none';
+                // Use direct URL parameters (GET request) instead of POST
+                const saveUrl = `${scriptUrl}?id=${encodeURIComponent(invitationId)}&name=${encodeURIComponent(guestName)}&save=true`;
                 
-                // Create a hidden field to hold the JSON
-                const jsonField = document.createElement('input');
-                jsonField.type = 'hidden';
-                jsonField.name = 'json';
-                jsonField.value = JSON.stringify(jsonData);
-                form.appendChild(jsonField);
+                // Create an image to make the request (avoids CORS)
+                const img = new Image();
+                img.style.display = 'none';
+                img.src = saveUrl;
+                document.body.appendChild(img);
                 
-                // Add to document and submit
-                document.body.appendChild(form);
-                
-                const iframe = document.createElement('iframe');
-                iframe.name = '_blank';
-                iframe.style.display = 'none';
-                document.body.appendChild(iframe);
-                
-                // Submit form
-                form.submit();
-                
-                // Create invitation link
+                // Set timeout to remove the image
                 setTimeout(() => {
-                    const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
-                    document.getElementById('invitationLink').value = invitationLink;
-                    document.getElementById('resultContainer').style.display = 'block';
-                    
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('generateBtn').disabled = false;
-                    
-                    // Clean up
-                    document.body.removeChild(form);
-                    document.body.removeChild(iframe);
-                }, 2000);
+                    if (document.body.contains(img)) {
+                        document.body.removeChild(img);
+                    }
+                }, 5000);
+                
+                // Display the link without waiting
+                document.getElementById('invitationLink').value = invitationLink;
+                document.getElementById('resultContainer').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('generateBtn').disabled = false;
                 
             } catch (error) {
                 console.error('Error:', error);
