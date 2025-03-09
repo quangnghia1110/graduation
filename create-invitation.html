@@ -123,46 +123,42 @@
             document.getElementById('generateBtn').disabled = true;
             const invitationId = generateId();
             
-            // Using Google Sheets API directly
-            const sheetId = '17T4wP-l1KSm0iyqdWFMZyKUsJ0RFn8gCFNzKrTlG9RE'; // Use your actual sheet ID
+            // Google Apps Script URL
+            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
             
             try {
-                // We'll use a proxy service to avoid CORS issues
-                const proxyUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
+                // Method 1: Using direct JSON approach with a hidden form
+                const jsonData = {
+                    id: invitationId,
+                    name: guestName
+                };
                 
-                // Create a form element to submit the data
+                // Create a hidden form that will submit the JSON as a text field
                 const form = document.createElement('form');
-                form.setAttribute('method', 'POST');
-                form.setAttribute('action', proxyUrl);
-                form.setAttribute('target', '_blank');
+                form.method = 'POST';
+                form.action = scriptUrl;
+                form.target = '_blank';
                 form.style.display = 'none';
                 
-                // Add the data fields
-                const idField = document.createElement('input');
-                idField.setAttribute('type', 'hidden');
-                idField.setAttribute('name', 'id');
-                idField.setAttribute('value', invitationId);
-                form.appendChild(idField);
+                // Create a hidden field to hold the JSON
+                const jsonField = document.createElement('input');
+                jsonField.type = 'hidden';
+                jsonField.name = 'json';
+                jsonField.value = JSON.stringify(jsonData);
+                form.appendChild(jsonField);
                 
-                const nameField = document.createElement('input');
-                nameField.setAttribute('type', 'hidden');
-                nameField.setAttribute('name', 'name');
-                nameField.setAttribute('value', guestName);
-                form.appendChild(nameField);
-                
-                // Add to document, submit, and remove
+                // Add to document and submit
                 document.body.appendChild(form);
                 
-                // Add a hidden iframe to prevent page redirect
                 const iframe = document.createElement('iframe');
                 iframe.name = '_blank';
                 iframe.style.display = 'none';
                 document.body.appendChild(iframe);
                 
-                // Submit the form
+                // Submit form
                 form.submit();
                 
-                // Create invitation link regardless of submission result
+                // Create invitation link
                 setTimeout(() => {
                     const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
                     document.getElementById('invitationLink').value = invitationLink;
