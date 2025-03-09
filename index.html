@@ -49,9 +49,9 @@
             const id = urlParams.get('id');
             const name = urlParams.get('name');
 
-            // Kiểm tra id và name có tồn tại không
+            // Nếu truy cập trực tiếp vào index.html mà không có params
             if (!id || !name) {
-                showErrorPage("ID hoặc tên không được để trống");
+                window.location.href = '/create-invitation.html';
                 return;
             }
 
