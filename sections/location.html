@@ -147,12 +147,18 @@
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    if (data && data.name) {
+                    console.log("API Response:", data); // Debug log
+                    
+                    if (data && data.result === 'success' && data.name) {
                         invitationElement.textContent = data.name;
+                        // Cập nhật tất cả các phần tử có data-id="invitation"
+                        document.querySelectorAll('[data-id="invitation"]').forEach(element => {
+                            element.textContent = data.name;
+                        });
                         console.log("Đã hiển thị tên từ API:", data.name);
                     } else {
                         invitationElement.textContent = "Quý khách";
-                        console.log("Không tìm thấy tên trong API");
+                        console.log("Không tìm thấy tên trong API:", data);
                     }
                 })
                 .catch(error => {
