@@ -113,51 +113,97 @@
             }
             return result;
         }
-        async function generateInvitation() {
-            try {
-                const guestName = document.getElementById('guestName').value.trim();
-                if (!guestName) {
-                    alert('Vui lòng nhập tên người được mời!');
-                    return;
+        function showToast(message) {
+            // Xóa toast cũ nếu có
+            const existingToast = document.querySelector('.custom-toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Tạo toast mới
+            const toast = document.createElement('div');
+            toast.className = 'custom-toast';
+            toast.innerHTML = `
+                <div class="toast-content">
+                    <div class="toast-icon">ℹ️</div>
+                    <div class="toast-message">${message}</div>
+                </div>
+            `;
+
+            // Thêm style cho toast
+            const style = document.createElement('style');
+            style.textContent = `
+                .custom-toast {
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 15px 25px;
+                    border-radius: 8px;
+                    z-index: 9999;
+                    animation: fadeInOut 2s ease-in-out;
                 }
-                
-                document.getElementById('loading').style.display = 'flex';
-                document.getElementById('generateBtn').disabled = true;
-                
-                const invitationId = generateId();
-                console.log(`Generated ID: ${invitationId}`);
-                
-                // Đảm bảo URL gọi API đúng
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
-                console.log(`API URL: ${scriptUrl}`);
-                
-                // Tạo body request
-                const requestBody = `action=saveInvitation&id=${invitationId}&name=${encodeURIComponent(guestName)}`;
-                console.log(`Request body: ${requestBody}`);
-                
-                // Gọi API
-                const response = await fetch(scriptUrl, {
+
+                .toast-content {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                }
+
+                .toast-icon {
+                    font-size: 24px;
+                }
+
+                .toast-message {
+                    font-size: 16px;
+                }
+
+                @keyframes fadeInOut {
+                    0% { opacity: 0; }
+                    15% { opacity: 1; }
+                    85% { opacity: 1; }
+                    100% { opacity: 0; }
+                }
+            `;
+
+            // Thêm toast và style vào document
+            document.head.appendChild(style);
+            document.body.appendChild(toast);
+
+            // Xóa toast sau 2 giây
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+        async function generateInvitation() {
+            const guestName = document.getElementById('guestName').value.trim();
+            if (!guestName) {
+                showToast('Vui lòng nhập tên người được mời!');
+                return;
+            }
+            document.getElementById('loading').style.display = 'flex';
+            document.getElementById('generateBtn').disabled = true;
+            const invitationId = generateId();
+            
+            try {
+                const url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec`;
+                const response = await fetch(url, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: requestBody
+                    body: `action=saveInvitation&id=${invitationId}&name=${encodeURIComponent(guestName)}`
                 });
-                
-                console.log("Response received");
-                
-                // Tạo link thiệp mời
-                // Đảm bảo baseUrl có định dạng đúng
-                const validBaseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
-                const invitationLink = `${validBaseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
-                console.log(`Generated invitation link: ${invitationLink}`);
-                
+
+                const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
                 document.getElementById('invitationLink').value = invitationLink;
                 document.getElementById('resultContainer').style.display = 'block';
             } catch (error) {
                 console.error('Error:', error);
-                alert('Có lỗi xảy ra khi tạo thiệp mời. Vui lòng thử lại!');
+                showToast('Có lỗi xảy ra khi tạo thiệp mời. Vui lòng thử lại!');
             } finally {
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('generateBtn').disabled = false;
@@ -167,7 +213,7 @@
             const linkInput = document.getElementById('invitationLink');
             linkInput.select();
             document.execCommand('copy');
-            alert('Đã sao chép link thành công!');
+            showToast('Đã sao chép link thành công!');
         }
     </script>
 </body>

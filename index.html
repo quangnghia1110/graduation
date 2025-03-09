@@ -232,7 +232,7 @@
             }
             let songuoi = parseInt(document.querySelector('#id_field_sl').value);
             let phuongtien = parseInt(document.querySelector('#id_field_pt').value);
-            let url = `https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec?`;
+            let url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?`;
             if (isthamdu) {
                 url += `name_km=${encodeURIComponent(name)}&tham_gia=X&count=${songuoi}&phuong_tien=${encodeURIComponent(phuongtien == 1 ? 'X' : 'O')}&time_send=${encodeURIComponent((new Date()).toString())}`;
             } else {
@@ -314,7 +314,7 @@
             const invitationId = urlParams.get('id');
             if (invitationId) {
                 try {
-                    const url = `https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec?action=getInvitation&id=${invitationId}`;
+                    const url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?action=getInvitation&id=${invitationId}`;
                     const response = await fetch(url);
                     const data = await response.json();
                     if (data && data.name) {
