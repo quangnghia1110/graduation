@@ -123,33 +123,58 @@
             document.getElementById('generateBtn').disabled = true;
             const invitationId = generateId();
             
-            // Using JSON approach to match Google Apps Script expectations
-            const url = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
+            // Using Google Sheets API directly
+            const sheetId = '17T4wP-l1KSm0iyqdWFMZyKUsJ0RFn8gCFNzKrTlG9RE'; // Use your actual sheet ID
             
             try {
-                // Send JSON data with content-type header
-                fetch(url, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain' // Using text/plain to avoid preflight requests
-                    },
-                    body: JSON.stringify({
-                        id: invitationId,
-                        name: guestName // Send the raw name
-                    })
-                });
+                // We'll use a proxy service to avoid CORS issues
+                const proxyUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
                 
-                // Since we can't read the response due to no-cors, just proceed with creating the link
+                // Create a form element to submit the data
+                const form = document.createElement('form');
+                form.setAttribute('method', 'POST');
+                form.setAttribute('action', proxyUrl);
+                form.setAttribute('target', '_blank');
+                form.style.display = 'none';
+                
+                // Add the data fields
+                const idField = document.createElement('input');
+                idField.setAttribute('type', 'hidden');
+                idField.setAttribute('name', 'id');
+                idField.setAttribute('value', invitationId);
+                form.appendChild(idField);
+                
+                const nameField = document.createElement('input');
+                nameField.setAttribute('type', 'hidden');
+                nameField.setAttribute('name', 'name');
+                nameField.setAttribute('value', guestName);
+                form.appendChild(nameField);
+                
+                // Add to document, submit, and remove
+                document.body.appendChild(form);
+                
+                // Add a hidden iframe to prevent page redirect
+                const iframe = document.createElement('iframe');
+                iframe.name = '_blank';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+                
+                // Submit the form
+                form.submit();
+                
+                // Create invitation link regardless of submission result
                 setTimeout(() => {
                     const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
                     document.getElementById('invitationLink').value = invitationLink;
                     document.getElementById('resultContainer').style.display = 'block';
                     
-                    // Hide loading
                     document.getElementById('loading').style.display = 'none';
                     document.getElementById('generateBtn').disabled = false;
-                }, 2000); // Increasing delay slightly to ensure request completes
+                    
+                    // Clean up
+                    document.body.removeChild(form);
+                    document.body.removeChild(iframe);
+                }, 2000);
                 
             } catch (error) {
                 console.error('Error:', error);

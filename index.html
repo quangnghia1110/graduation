@@ -56,7 +56,9 @@
                     <div id="section-loading"></div>
                     <div class="pageMain">
                         <div class="t8">
-                            <div id="section-banner"></div>
+                            <div id="section-banner">
+                                <div class="guest_name" id="invitation" style="display:none;"></div>
+                            </div>
                             <div id="section-location"></div>
                             <div id="section-bio"></div>
                             <div id="section-journey"></div>
@@ -110,9 +112,25 @@
             if (guestName) {
                 function updateGuestName() {
                     console.log("Đang cập nhật tên khách:", guestName);
-                    const invitationElement = document.getElementById('invitation') || 
-                                             document.querySelector('.guest_name') ||
-                                             document.querySelector('[data-id="invitation"]');
+                    
+                    // If element doesn't exist, create it
+                    if (!document.getElementById('invitation')) {
+                        console.log("Tạo element 'invitation'");
+                        const invitationDiv = document.createElement('div');
+                        invitationDiv.id = 'invitation';
+                        invitationDiv.className = 'guest_name';
+                        invitationDiv.style.display = 'none';
+                        
+                        // Add it to a visible section
+                        const section = document.getElementById('section-banner');
+                        if (section) {
+                            section.appendChild(invitationDiv);
+                        } else {
+                            document.body.appendChild(invitationDiv);
+                        }
+                    }
+                    
+                    const invitationElement = document.getElementById('invitation');
                     if (invitationElement) {
                         invitationElement.textContent = decodeURIComponent(guestName);
                         invitationElement.style.display = 'block';
