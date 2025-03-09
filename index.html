@@ -103,6 +103,8 @@
         }
     </style>
     <script>
+        const baseUrl = 'https://graduation-virid.vercel.app/';
+        
         function generateId(length = 12) {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = '';
@@ -130,8 +132,7 @@
                     },
                     body: `action=saveInvitation&id=${invitationId}&name=${encodeURIComponent(guestName)}`
                 });
-                const baseUrl = window.location.origin;
-                const invitationLink = `${baseUrl}/index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
+                const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
                 document.getElementById('invitationLink').value = invitationLink;
                 document.getElementById('resultContainer').style.display = 'block';
             } catch (error) {
