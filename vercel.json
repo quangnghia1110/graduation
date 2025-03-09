@@ -1,5 +1,8 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/create-invitation.html" }
+  "routes": [
+    { 
+      "src": "/", 
+      "dest": "/create-invitation.html"
+    }
   ]
 } 
