@@ -128,11 +128,19 @@
             return;
         }
 
+        // Cập nhật tất cả các phần tử có data-id="invitation"
+        function updateAllInvitationElements(name) {
+            document.querySelectorAll('[data-id="invitation"]').forEach(element => {
+                element.textContent = name;
+                element.style.display = 'block'; // Đảm bảo element hiển thị
+            });
+        }
+
         // Nếu có name trong URL thì hiển thị luôn
         if (guestName) {
             try {
                 const decodedName = decodeURIComponent(guestName);
-                invitationElement.textContent = decodedName;
+                updateAllInvitationElements(decodedName);
                 console.log("Đã hiển thị tên từ URL:", decodedName);
                 return; // Thoát nếu đã hiển thị được tên
             } catch (error) {
@@ -145,28 +153,29 @@
             const url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?action=getInvitation&id=${guestId}`;
             
             fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("API Response:", data); // Debug log
+                .then(response => {
+                    console.log("Raw response:", response); // Debug log
+                    return response.text(); // Đọc response dưới dạng text trước
+                })
+                .then(text => {
+                    console.log("Raw text:", text); // Debug log
+                    const data = JSON.parse(text);
+                    console.log("Parsed data:", data); // Debug log
                     
                     if (data && data.result === 'success' && data.name) {
-                        invitationElement.textContent = data.name;
-                        // Cập nhật tất cả các phần tử có data-id="invitation"
-                        document.querySelectorAll('[data-id="invitation"]').forEach(element => {
-                            element.textContent = data.name;
-                        });
+                        updateAllInvitationElements(data.name);
                         console.log("Đã hiển thị tên từ API:", data.name);
                     } else {
-                        invitationElement.textContent = "Quý khách";
+                        updateAllInvitationElements("Quý khách");
                         console.log("Không tìm thấy tên trong API:", data);
                     }
                 })
                 .catch(error => {
                     console.error("Lỗi khi gọi API:", error);
-                    invitationElement.textContent = "Quý khách";
+                    updateAllInvitationElements("Quý khách");
                 });
         } else {
-            invitationElement.textContent = "Quý khách";
+            updateAllInvitationElements("Quý khách");
             console.log("Không có ID trong URL");
         }
     });
