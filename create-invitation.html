@@ -123,34 +123,41 @@
             document.getElementById('generateBtn').disabled = true;
             const invitationId = generateId();
             
-            // Google Apps Script URL
-            const scriptUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
-            
+            // Using Google Sheets API via Apps Script
             try {
-                // Create the invitation link first (don't wait for sheet)
+                // Update with your actual deployed Apps Script URL
+                const scriptUrl = 'YOUR_SCRIPT_URL';
+                
+                // Create the JSONP callback
+                const callbackName = 'jsonpCallback_' + Date.now();
+                window[callbackName] = function(response) {
+                    console.log('Spreadsheet response:', response);
+                    delete window[callbackName];
+                };
+                
+                // Create a script element to load the URL
+                const script = document.createElement('script');
+                const url = new URL(scriptUrl);
+                url.searchParams.append('id', invitationId);
+                url.searchParams.append('name', guestName);
+                url.searchParams.append('save', 'true');
+                url.searchParams.append('callback', callbackName);
+                
+                script.src = url.toString();
+                document.body.appendChild(script);
+                
+                // Create invitation link (even if save fails)
                 const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
-                
-                // Use direct URL parameters (GET request) instead of POST
-                const saveUrl = `${scriptUrl}?id=${encodeURIComponent(invitationId)}&name=${encodeURIComponent(guestName)}&save=true`;
-                
-                // Create an image to make the request (avoids CORS)
-                const img = new Image();
-                img.style.display = 'none';
-                img.src = saveUrl;
-                document.body.appendChild(img);
-                
-                // Set timeout to remove the image
-                setTimeout(() => {
-                    if (document.body.contains(img)) {
-                        document.body.removeChild(img);
-                    }
-                }, 5000);
-                
-                // Display the link without waiting
                 document.getElementById('invitationLink').value = invitationLink;
                 document.getElementById('resultContainer').style.display = 'block';
+                
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('generateBtn').disabled = false;
+                
+                // Remove the script element after a timeout
+                setTimeout(() => {
+                    document.body.removeChild(script);
+                }, 3000);
                 
             } catch (error) {
                 console.error('Error:', error);
