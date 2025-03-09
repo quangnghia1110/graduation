@@ -45,9 +45,51 @@
     </link>
     <style>
         /* Thêm CSS của bạn ở đây */
+        body {
+            font-family: 'Lora', serif;
+            background-color: #f9f7f7;
+            color: #333;
+            pointer-events: auto !important;
+        }
+        .invitation-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 40px;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+        .invitation-header {
+            font-family: 'Meow Script', cursive;
+            color: #002366;
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        .guest-name-container {
+            margin: 30px 0;
+            padding: 15px;
+            border: 1px dashed #e0e0e0;
+            background-color: #f9f7f7;
+            border-radius: 10px;
+        }
+        #invitation {
+            font-weight: bold;
+            font-size: 28px;
+            color: #002366;
+            display: block !important;
+        }
+        .invitation-details {
+            margin: 40px 0;
+            line-height: 1.8;
+        }
+        .invitation-footer {
+            margin-top: 40px;
+            font-style: italic;
+        }
     </style>
 </head>
-<body style="pointerEvents: none;">
+<body style="pointer-events: auto !important;">
     <div class="no-fb-chat" data-n-head="%7B%22class%22:%7B%22ssr%22:%5B%22no-fb-chat%22%5D%7D%7D">
         <div id="__nuxt">
             <div id="__layout">
@@ -57,7 +99,28 @@
                     <div class="pageMain">
                         <div class="t8">
                             <div id="section-banner">
-                                <div class="guest_name" id="invitation" style="display:none;"></div>
+                                <div class="invitation-container">
+                                    <div class="invitation-header">
+                                        <h1>Lễ Tốt Nghiệp</h1>
+                                        <h2>LÊ PHƯƠNG HÀ</h2>
+                                    </div>
+                                    
+                                    <div class="guest-name-container">
+                                        <p>Kính mời:</p>
+                                        <div class="guest_name" id="invitation" style="display:block;"></div>
+                                        <p>đến dự buổi lễ tốt nghiệp</p>
+                                    </div>
+                                    
+                                    <div class="invitation-details">
+                                        <p><strong>Thời gian:</strong> 9:00 - 11:30, Ngày 20 tháng 6 năm 2024</p>
+                                        <p><strong>Địa điểm:</strong> Hội trường A1, Đại học ABC</p>
+                                        <p><strong>Dress code:</strong> Smart casual</p>
+                                    </div>
+                                    
+                                    <div class="invitation-footer">
+                                        <p>Rất mong được đón tiếp!</p>
+                                    </div>
+                                </div>
                             </div>
                             <div id="section-location"></div>
                             <div id="section-bio"></div>
@@ -85,6 +148,9 @@
             const id = urlParams.get('id');
             const name = urlParams.get('name');
 
+            // Remove pointer-events restriction
+            document.body.style.pointerEvents = 'auto';
+
             // Nếu truy cập trực tiếp vào index.html mà không có params
             if (!id || !name) {
                 window.location.href = '/create-invitation.html';
@@ -110,38 +176,24 @@
 
             const guestName = urlParams.get('name');
             if (guestName) {
-                function updateGuestName() {
-                    console.log("Đang cập nhật tên khách:", guestName);
-                    
-                    // If element doesn't exist, create it
-                    if (!document.getElementById('invitation')) {
-                        console.log("Tạo element 'invitation'");
-                        const invitationDiv = document.createElement('div');
-                        invitationDiv.id = 'invitation';
-                        invitationDiv.className = 'guest_name';
-                        invitationDiv.style.display = 'none';
-                        
-                        // Add it to a visible section
-                        const section = document.getElementById('section-banner');
-                        if (section) {
-                            section.appendChild(invitationDiv);
-                        } else {
-                            document.body.appendChild(invitationDiv);
-                        }
-                    }
-                    
-                    const invitationElement = document.getElementById('invitation');
-                    if (invitationElement) {
-                        invitationElement.textContent = decodeURIComponent(guestName);
-                        invitationElement.style.display = 'block';
-                        console.log("Đã cập nhật tên khách thành công");
-                    } else {
-                        console.log("Không tìm thấy element 'invitation' - thử lại sau 500ms");
-                        setTimeout(updateGuestName, 500);
+                const invitationElement = document.getElementById('invitation');
+                if (invitationElement) {
+                    invitationElement.textContent = decodeURIComponent(guestName);
+                    invitationElement.style.display = 'block';
+                    console.log("Đã cập nhật tên khách thành công");
+                } else {
+                    console.log("Không tìm thấy element 'invitation'");
+                    // Create it if it doesn't exist
+                    const container = document.querySelector('.guest-name-container') || document.getElementById('section-banner');
+                    if (container) {
+                        const nameElement = document.createElement('div');
+                        nameElement.id = 'invitation';
+                        nameElement.className = 'guest_name';
+                        nameElement.style.display = 'block';
+                        nameElement.textContent = decodeURIComponent(guestName);
+                        container.appendChild(nameElement);
                     }
                 }
-                updateGuestName();
-                window.addEventListener('load', updateGuestName);
             }
         });
 
