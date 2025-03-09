@@ -115,144 +115,53 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Get the URL parameter 'id'
+        // Lấy tham số từ URL
         const urlParams = new URLSearchParams(window.location.search);
         const guestId = urlParams.get('id');
-        console.log("Guest ID from URL:", guestId);
+        const guestName = urlParams.get('name');
         
-        // TRY METHOD 1: Directly display name from URL if available
-        const directName = urlParams.get('name');
-        if (directName) {
-            const invitationElement = document.getElementById('invitation');
-            if (invitationElement) {
-                invitationElement.textContent = decodeURIComponent(directName);
-                console.log("Displayed name directly from URL parameter:", directName);
+        // Lấy element hiển thị tên
+        const invitationElement = document.getElementById('invitation');
+        
+        if (!invitationElement) {
+            console.error("Không tìm thấy element invitation");
+            return;
+        }
+
+        // Nếu có name trong URL thì hiển thị luôn
+        if (guestName) {
+            try {
+                const decodedName = decodeURIComponent(guestName);
+                invitationElement.textContent = decodedName;
+                console.log("Đã hiển thị tên từ URL:", decodedName);
+                return; // Thoát nếu đã hiển thị được tên
+            } catch (error) {
+                console.error("Lỗi khi decode tên:", error);
             }
         }
-        
-        // TRY METHOD 2: Get name from Google Sheet
+
+        // Nếu không có name hoặc có lỗi, thử lấy từ API
         if (guestId) {
-            // Get the invitation element
-            const invitationElement = document.getElementById('invitation');
-            if (!invitationElement) {
-                console.error("Invitation element with ID 'invitation' not found in HTML");
-                return;
-            }
+            const url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?action=getInvitation&id=${guestId}`;
             
-            // Test - force update to verify element can be changed
-            invitationElement.innerHTML = "Đang tải tên khách...";
-            
-            // URL to your Google Sheets data
-            const sheetId = '17T4wP-l1KSm0iyqdWFMZyKUsJ0RFn8gCFNzKrTlG9RE';
-            
-            // Thử phương pháp JSONP thay vì fetch (tránh vấn đề CORS)
-            const script = document.createElement('script');
-            script.src = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Invitations&callback=handleSheetData`;
-            document.body.appendChild(script);
-            
-            // Hàm toàn cục nhận dữ liệu từ Google Sheets
-            window.handleSheetData = function(data) {
-                console.log("Received data via JSONP:", data);
-                try {
-                    if (data && data.table && data.table.rows) {
-                        const rows = data.table.rows;
-                        let guestFound = false;
-                        
-                        // Loop through all rows to find matching ID
-                        for (let i = 0; i < rows.length; i++) {
-                            const row = rows[i].c;
-                            const id = row[0] ? row[0].v : null;
-                            
-                            if (id === guestId) {
-                                guestFound = true;
-                                const guestName = row[1] ? row[1].v : "Guest";
-                                console.log("Found guest:", guestName);
-                                
-                                // Update using different methods to ensure it works
-                                invitationElement.textContent = guestName;
-                                invitationElement.innerHTML = guestName;
-                                document.querySelector('.guest_name').innerHTML = guestName;
-                                
-                                console.log("Updated invitation with name:", guestName);
-                                break;
-                            }
-                        }
-                        
-                        if (!guestFound) {
-                            console.log("Guest ID not found, using fallback method");
-                            // Fallback: Show something if guest not found
-                            invitationElement.textContent = "Quý khách";
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error processing sheet data:", error);
-                    // Fallback if error
-                    invitationElement.textContent = "Quý khách";
-                }
-            };
-            
-            // Backup method using fetch
-            setTimeout(function() {
-                // If JSONP didn't work after 3 seconds, try fetch
-                if (invitationElement.textContent === "Đang tải tên khách...") {
-                    console.log("JSONP timed out, trying fetch method");
-                    
-                    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Invitations`;
-                    
-                    fetch(sheetUrl, {
-                        mode: 'no-cors' // Try no-cors mode
-                    })
-                    .then(response => {
-                        console.log("Response received");
-                        return response.text();
-                    })
-                    .then(data => {
-                        console.log("Data received (first 100 chars):", data.substring(0, 100));
-                        
-                        try {
-                            // Parse data (different formats possible)
-                            let jsonData;
-                            if (data.startsWith("/*O_o*/")) {
-                                jsonData = JSON.parse(data.substring(47).slice(0, -2));
-                            } else if (data.startsWith("google.visualization.Query.setResponse(")) {
-                                jsonData = JSON.parse(data.substring(41, data.length - 2));
-                            } else {
-                                const startIndex = data.indexOf('{');
-                                const endIndex = data.lastIndexOf('}') + 1;
-                                if (startIndex >= 0 && endIndex > 0) {
-                                    jsonData = JSON.parse(data.substring(startIndex, endIndex));
-                                }
-                            }
-                            
-                            if (jsonData && jsonData.table && jsonData.table.rows) {
-                                const rows = jsonData.table.rows;
-                                
-                                for (let i = 0; i < rows.length; i++) {
-                                    const row = rows[i].c;
-                                    const id = row[0] ? row[0].v : null;
-                                    
-                                    if (id === guestId) {
-                                        const guestName = row[1] ? row[1].v : "Guest";
-                                        invitationElement.textContent = guestName;
-                                        break;
-                                    }
-                                }
-                            }
-                        } catch (error) {
-                            console.error("Error processing data:", error);
-                            // Fallback
-                            invitationElement.textContent = "Quý khách";
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Fetch error:", error);
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.name) {
+                        invitationElement.textContent = data.name;
+                        console.log("Đã hiển thị tên từ API:", data.name);
+                    } else {
                         invitationElement.textContent = "Quý khách";
-                    });
-                }
-            }, 3000);
+                        console.log("Không tìm thấy tên trong API");
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi gọi API:", error);
+                    invitationElement.textContent = "Quý khách";
+                });
         } else {
-            console.log("No guest ID found in URL");
-            document.getElementById('invitation').textContent = "Quý khách";
+            invitationElement.textContent = "Quý khách";
+            console.log("Không có ID trong URL");
         }
     });
 </script>
