@@ -1,0 +1,183 @@
+html[data-v-da63ec94] {
+  scroll-behavior: smooth;
+  font-family: Inter, sans-serif;
+}
+
+a[data-v-da63ec94] {
+  text-decoration: none;
+}
+
+.font-poppins[data-v-da63ec94] {
+  font-family: Svn-Poppins, sans-serif;
+}
+
+.h[data-v-da63ec94] {
+  font-family: Inter, sans-serif;
+}
+
+.h-container[data-v-da63ec94] {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .h-container[data-v-da63ec94] {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .h-container[data-v-da63ec94] {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .h-container[data-v-da63ec94] {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .h-container[data-v-da63ec94] {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .h-container[data-v-da63ec94] {
+    max-width: 1536px;
+  }
+}
+
+.h-container[data-v-da63ec94] {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.h-btn[data-v-da63ec94] {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+    #1325b9 !important;
+  border: 2px solid #000;
+  border-radius: 8px;
+  color: #fff;
+  font-family: Svn-Poppins, sans-serif;
+  font-weight: 600;
+}
+
+.h-header[data-v-da63ec94] {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .h-header[data-v-da63ec94] {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .h-header[data-v-da63ec94] {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .h-header[data-v-da63ec94] {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .h-header[data-v-da63ec94] {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .h-header[data-v-da63ec94] {
+    max-width: 1536px;
+  }
+}
+
+.h-header[data-v-da63ec94] {
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  height: 80px;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+.theme-layout .nt-app-home,
+.theme-layout .tw-bg-white {
+  background-color: #0f1e94;
+}
+
+.theme-layout .nt-app-home svg {
+  fill: #fff;
+}
+
+.theme-layout .header-menu {
+  color: #fff;
+}
+
+.theme-layout .header-menu.nuxt-link-exact-active {
+  color: #f73481 !important;
+}
+
+.theme-layout .auth a {
+  color: #fff;
+}
+
+.theme-layout .auth a.signup {
+  border-color: #fff !important;
+}
+
+.header-phone {
+  text-align: center;
+  background: #0f1e94;
+  color: #fff;
+  min-height: 35px;
+  font-size: 13px;
+  line-height: 22px;
+}
+
+.h-header-phone,
+.h-header-phone div,
+.header-phone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.h-header-phone div {
+  margin: 0 4px;
+}
+
+.h-header-phone span {
+  font-weight: 600;
+  margin-left: 4px;
+  font-size: 15px;
+}
+
+@media only screen and (max-width: 672px) {
+  .h-header-phone {
+    display: flex;
+    padding: 5px 0;
+    flex-direction: column;
+    line-height: 11px;
+  }
+
+  .h-header-phone span {
+    font-size: 10px;
+  }
+
+  .h-header-phone div {
+    font-size: 8px;
+  }
+}
+html {
+  overflow: auto;
+}

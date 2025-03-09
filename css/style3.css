@@ -1,0 +1,165 @@
+@font-face {
+  font-family: "Svn-Poppins";
+  src: url(/_nuxt/fonts/SVN-Poppins-Bold.95e9fd4.ttf);
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "Svn-Poppins";
+  src: url(/_nuxt/fonts/SVN-Poppins-Regular.7d43752.ttf);
+  font-weight: 300;
+}
+
+.lixi-dialog {
+  overflow-y: hidden;
+}
+
+.white--bg {
+  background: #fff;
+}
+
+.copy-img {
+  margin-right: 1.5rem;
+}
+
+.text-h3-dialog {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+  font-weight: 700;
+}
+
+.text-h3-dialog,
+.text-h4-dialog {
+  letter-spacing: normal;
+  font-family: "Svn-Poppins";
+}
+
+.text-h4-dialog {
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+  font-weight: 300;
+}
+
+@media only screen and (max-width: 672px) {
+  .v-application .py-12 {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+
+  .v-application .px-16 {
+    padding-right: 40px !important;
+    padding-left: 40px !important;
+  }
+
+  .col-5,
+  .col-6 {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  .text-h3-dialog {
+    font-size: 1.5rem;
+  }
+
+  .text-h4-dialog {
+    font-size: 0.85rem;
+  }
+
+  .btn-text {
+    display: none;
+  }
+
+  .button-copy {
+    min-width: auto;
+  }
+
+  .url-text {
+    width: 100%;
+    font-size: 14px !important;
+    padding: 1rem 0;
+  }
+
+  .text-h4 {
+    font-size: 1rem;
+  }
+
+  .graphic-dialog {
+    display: none;
+  }
+
+  .copy-img {
+    margin: 0;
+  }
+
+  .v-application .pb-8 {
+    padding-bottom: 16px !important;
+  }
+
+  .v-application .pt-8 {
+    padding-top: 16px !important;
+  }
+}
+
+.lixi-dialog .header-block {
+  background: #db4140 !important;
+  border-radius: 19px 19px 0 0 !important;
+}
+
+.lixi-dialog .pop-up-bs {
+  border: 4px solid #fcd48d !important;
+  box-sizing: border-box;
+  box-shadow: 0 4px 0 rgba(28, 28, 28, 0.25) !important;
+  border-radius: 15px;
+}
+
+.lixi-dialog .container.white--bg,
+.lixi-dialog .pop-up-bs {
+  background: #ffefe0 !important;
+}
+
+.lixi-dialog .button-copy {
+  background: #0a6a59 !important;
+}
+
+.lixi-dialog .button-copy .btn-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff !important;
+}
+
+.lixi-dialog .url-text {
+  color: #db4140 !important;
+}
+
+.lixi-dialog .img-lixi {
+  position: relative;
+  bottom: -38px;
+  float: right;
+}
+
+.lixi-dialog .btn-lixi-outline {
+  border: 1px solid #db4140;
+}
+
+.lixi-dialog .btn-lixi-outline .v-btn__content {
+  color: #db4140;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.lixi-dialog .btn-lixi {
+  background: #db4140 !important;
+  border: 2px solid #fcd48d;
+}
+
+.lixi-dialog .btn-lixi .v-btn__content {
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.lixi-dialog .text-send {
+  color: #ac2120;
+}

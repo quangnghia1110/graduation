@@ -1,0 +1,258 @@
+<section data-widget="location" class="t8-link" style="background-color: #fff; padding: 20px; text-align: center;">
+    <div class="location-container" style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: 20px; flex-wrap: wrap;">
+        <!-- Left Image -->
+        <div class="location-image" style="flex: 0 0 250px;">
+            <img src="./assets/img/theme/lephuongha/lephuongha22.jpg" alt="" 
+                style="width: 100%; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        </div>
+
+        <!-- Center Content -->
+        <div class="location-content" style="flex: 1 1 500px; min-width: 300px; max-width: 600px;">
+            <div class="t8-location-top" style="margin-bottom: 20px;">
+                <h1 style="color: #002366; font-size: 36px;">Trân trọng kính mời</h1>
+                <div data-id="invitation" id="invitation" class="guest_name" style="font-size: 60px; color: #ff0000; margin: 15px 0; font-family: 'Meow Script', cursive;">NGÔ QUANG NGH</div>
+            </div>
+            
+            <div class="t8-location-mid" style="background: #f9f9f9; padding: 30px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <div style="width: 40px; height: 40px; background-color: #f9e8ea; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        📅
+                    </div>
+                    <p style="font-size: 20px; color: #ff0000; font-weight: bold; margin: 0;">01.06 - 10:30 AM</p>
+                </div>
+                <p style="font-size: 18px; color: #333; margin-top: 10px;">Hội trường A, Trường Đại học HUFLIT</p>
+                <p style="font-size: 18px; color: #333;">155 Sư Vạn Hạnh, Phường 13, Quận 10, TP. Hồ Chí Minh</p>
+                <a data-block-node="url" href="https://maps.app.goo.gl/UuBuCWnk28mgJQa47" target="_blank" style="color: #002366; font-weight: bold; text-decoration: none;">Xem bản đồ</a>
+            </div>
+            
+            <p style="font-style: italic; color: #002366; font-size: 20px; margin-top: 30px;">Sự hiện diện của bạn là niềm vinh hạnh của tôi!</p>
+            
+            <div class="contact-section" style="margin-top: 40px;">
+                <h2 style="color: #002366; font-size: 24px; margin-bottom: 20px;">Thông tin liên hệ</h2>
+                <div style="display: flex; justify-content: center; gap: 50px; flex-wrap: wrap;">
+                    <a href="tel:0974117373" style="text-decoration: none; color: inherit;">
+                        <div class="contact-item" style="text-align: center;">
+                            <div style="width: 50px; height: 50px; background-color: #f9e8ea; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                📞
+                            </div>
+                            <p style="color: #002366; font-weight: 600;">Điện thoại</p>
+                            <span style="color: #333;">097 411 7373</span>
+                        </div>
+                    </a>
+                    <a href="mailto:lephuongha@gmail.com" style="text-decoration: none; color: inherit;">
+                        <div class="contact-item" style="text-align: center;">
+                            <div style="width: 50px; height: 50px; background-color: #f9e8ea; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                                📧
+                            </div>
+                            <p style="color: #002366; font-weight: 600;">Email</p>
+                            <span style="color: #333;">lephuongha@gmail.com</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="location-image" style="flex: 0 0 250px;">
+            <img src="./assets/img/theme/lephuongha/lephuongha23.jpg" alt="" 
+                style="width: 100%; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        </div>
+    </div>
+</section>
+
+<style>
+.location-image img {
+    transition: transform 0.5s ease;
+}
+
+.location-image img:hover {
+    transform: scale(1.05);
+}
+
+@media (max-width: 1200px) {
+    .location-container {
+        padding: 0 20px;
+    }
+    
+    .location-image {
+        flex: 0 0 200px !important;
+    }
+    
+    .location-image img {
+        height: 280px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .location-image {
+        flex: 0 0 150px !important;
+    }
+    
+    .location-image img {
+        height: 210px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .location-container {
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+    
+    .location-image {
+        flex: 0 0 45% !important;
+    }
+    
+    .location-image img {
+        height: 180px !important;
+    }
+    
+    .location-content {
+        order: -1;
+    }
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the URL parameter 'id'
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestId = urlParams.get('id');
+        console.log("Guest ID from URL:", guestId);
+        
+        // TRY METHOD 1: Directly display name from URL if available
+        const directName = urlParams.get('name');
+        if (directName) {
+            const invitationElement = document.getElementById('invitation');
+            if (invitationElement) {
+                invitationElement.textContent = decodeURIComponent(directName);
+                console.log("Displayed name directly from URL parameter:", directName);
+            }
+        }
+        
+        // TRY METHOD 2: Get name from Google Sheet
+        if (guestId) {
+            // Get the invitation element
+            const invitationElement = document.getElementById('invitation');
+            if (!invitationElement) {
+                console.error("Invitation element with ID 'invitation' not found in HTML");
+                return;
+            }
+            
+            // Test - force update to verify element can be changed
+            invitationElement.innerHTML = "Đang tải tên khách...";
+            
+            // URL to your Google Sheets data
+            const sheetId = '17T4wP-l1KSm0iyqdWFMZyKUsJ0RFn8gCFNzKrTlG9RE';
+            
+            // Thử phương pháp JSONP thay vì fetch (tránh vấn đề CORS)
+            const script = document.createElement('script');
+            script.src = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Invitations&callback=handleSheetData`;
+            document.body.appendChild(script);
+            
+            // Hàm toàn cục nhận dữ liệu từ Google Sheets
+            window.handleSheetData = function(data) {
+                console.log("Received data via JSONP:", data);
+                try {
+                    if (data && data.table && data.table.rows) {
+                        const rows = data.table.rows;
+                        let guestFound = false;
+                        
+                        // Loop through all rows to find matching ID
+                        for (let i = 0; i < rows.length; i++) {
+                            const row = rows[i].c;
+                            const id = row[0] ? row[0].v : null;
+                            
+                            if (id === guestId) {
+                                guestFound = true;
+                                const guestName = row[1] ? row[1].v : "Guest";
+                                console.log("Found guest:", guestName);
+                                
+                                // Update using different methods to ensure it works
+                                invitationElement.textContent = guestName;
+                                invitationElement.innerHTML = guestName;
+                                document.querySelector('.guest_name').innerHTML = guestName;
+                                
+                                console.log("Updated invitation with name:", guestName);
+                                break;
+                            }
+                        }
+                        
+                        if (!guestFound) {
+                            console.log("Guest ID not found, using fallback method");
+                            // Fallback: Show something if guest not found
+                            invitationElement.textContent = "Quý khách";
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error processing sheet data:", error);
+                    // Fallback if error
+                    invitationElement.textContent = "Quý khách";
+                }
+            };
+            
+            // Backup method using fetch
+            setTimeout(function() {
+                // If JSONP didn't work after 3 seconds, try fetch
+                if (invitationElement.textContent === "Đang tải tên khách...") {
+                    console.log("JSONP timed out, trying fetch method");
+                    
+                    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=Invitations`;
+                    
+                    fetch(sheetUrl, {
+                        mode: 'no-cors' // Try no-cors mode
+                    })
+                    .then(response => {
+                        console.log("Response received");
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log("Data received (first 100 chars):", data.substring(0, 100));
+                        
+                        try {
+                            // Parse data (different formats possible)
+                            let jsonData;
+                            if (data.startsWith("/*O_o*/")) {
+                                jsonData = JSON.parse(data.substring(47).slice(0, -2));
+                            } else if (data.startsWith("google.visualization.Query.setResponse(")) {
+                                jsonData = JSON.parse(data.substring(41, data.length - 2));
+                            } else {
+                                const startIndex = data.indexOf('{');
+                                const endIndex = data.lastIndexOf('}') + 1;
+                                if (startIndex >= 0 && endIndex > 0) {
+                                    jsonData = JSON.parse(data.substring(startIndex, endIndex));
+                                }
+                            }
+                            
+                            if (jsonData && jsonData.table && jsonData.table.rows) {
+                                const rows = jsonData.table.rows;
+                                
+                                for (let i = 0; i < rows.length; i++) {
+                                    const row = rows[i].c;
+                                    const id = row[0] ? row[0].v : null;
+                                    
+                                    if (id === guestId) {
+                                        const guestName = row[1] ? row[1].v : "Guest";
+                                        invitationElement.textContent = guestName;
+                                        break;
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            console.error("Error processing data:", error);
+                            // Fallback
+                            invitationElement.textContent = "Quý khách";
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Fetch error:", error);
+                        invitationElement.textContent = "Quý khách";
+                    });
+                }
+            }, 3000);
+        } else {
+            console.log("No guest ID found in URL");
+            document.getElementById('invitation').textContent = "Quý khách";
+        }
+    });
+</script>

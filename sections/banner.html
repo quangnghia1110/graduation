@@ -1,0 +1,79 @@
+<section data-widget="header" class="t8-banner" style="height: 100vh; overflow: hidden; position: relative; background: #fff5f6;">
+    <div class="container" style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+        <div class="hearts-container" style="position: absolute; width: 1000%; top: 40px; display: flex; justify-content: center; gap: 200px;">
+            <img src="./assets/img/theme/banner-heart.svg" style="width: 40px; opacity: 0.6; animation: float 3s infinite ease-in-out;">
+        </div>
+        <div class="left-images" style="position: absolute; left: 5%; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 100px 0;">
+            <img src="./assets/img/theme/lephuongha/lephuongha25.jpg" alt="" 
+                style="width: 250px; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: rotate(-5deg); transition: transform 0.5s ease;"
+                onmouseover="this.style.transform='scale(1.05) rotate(-5deg)'" 
+                onmouseout="this.style.transform='scale(1) rotate(-5deg)'">
+            <img src="./assets/img/theme/lephuongha/lephuongha27.jpg" alt="" 
+                style="width: 250px; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: rotate(5deg); transition: transform 0.5s ease;"
+                onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" 
+                onmouseout="this.style.transform='scale(1) rotate(5deg)'">
+        </div>
+        <div style="text-align: center; z-index: 2; padding: 0 20px;">
+            <h3 style="font-size: 32px; color: #002366; font-family: 'Meow Script', cursive; margin-bottom: 20px;">Lễ Tốt Nghiệp</h3>
+            <h1 style="font-size: 60px; color: #002366; font-family: 'Meow Script', cursive; margin: 20px 0;">LÊ PHƯƠNG HÀ</h1>
+            <div style="width: 200px; height: 2px; background: #002366; margin: 20px auto;"></div>
+            <p style="font-size: 24px; color: #ff0000; font-family: 'Meow Script', cursive;">01.06.2025</p>
+        </div>
+        <div class="right-images" style="position: absolute; right: 5%; height: 100%; display: flex; flex-direction: column; justify-content: space-around; padding: 100px 0;">
+            <img src="./assets/img/theme/lephuongha/lephuongha26.jpg" alt="" 
+                style="width: 250px; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: rotate(5deg); transition: transform 0.5s ease;"
+                onmouseover="this.style.transform='scale(1.05) rotate(5deg)'" 
+                onmouseout="this.style.transform='scale(1) rotate(5deg)'">
+            <img src="./assets/img/theme/lephuongha/lephuongha28.jpg" alt="" 
+                style="width: 250px; height: 350px; object-fit: cover; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transform: rotate(-5deg); transition: transform 0.5s ease;"
+                onmouseover="this.style.transform='scale(1.05) rotate(-5deg)'" 
+                onmouseout="this.style.transform='scale(1) rotate(-5deg)'">
+        </div>
+    </div>
+</section>
+<style>
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+@media (max-width: 1400px) {
+    .left-images, .right-images {
+        img {
+            width: 200px !important;
+            height: 280px !important;
+        }
+    }
+}
+@media (max-width: 1200px) {
+    .left-images, .right-images {
+        img {
+            width: 180px !important;
+            height: 250px !important;
+        }
+    }
+    h1 { font-size: 48px !important; }
+}
+@media (max-width: 768px) {
+    .left-images, .right-images {
+        img {
+            width: 140px !important;
+            height: 200px !important;
+        }
+    }
+    .hearts-container { gap: 100px !important; }
+    h1 { font-size: 40px !important; }
+    h3 { font-size: 28px !important; }
+}
+@media (max-width: 480px) {
+    .left-images, .right-images {
+        img {
+            width: 100px !important;
+            height: 140px !important;
+        }
+    }
+    .hearts-container { gap: 60px !important; }
+    h1 { font-size: 32px !important; }
+    h3 { font-size: 24px !important; }
+}
+</style>
