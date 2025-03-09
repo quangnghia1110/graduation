@@ -114,31 +114,45 @@
             return result;
         }
         async function generateInvitation() {
-            const guestName = document.getElementById('guestName').value.trim();
-            if (!guestName) {
-                alert('Vui lòng nhập tên người được mời!');
-                return;
-            }
-            document.getElementById('loading').style.display = 'flex';
-            document.getElementById('generateBtn').disabled = true;
-            const invitationId = generateId();
-            const url = `https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec`;
-            
             try {
-                console.log(`Sending request to: ${url}`);
-                console.log(`Parameters: id=${invitationId}, name=${guestName}`);
+                const guestName = document.getElementById('guestName').value.trim();
+                if (!guestName) {
+                    alert('Vui lòng nhập tên người được mời!');
+                    return;
+                }
                 
-                const response = await fetch(url, {
+                document.getElementById('loading').style.display = 'flex';
+                document.getElementById('generateBtn').disabled = true;
+                
+                const invitationId = generateId();
+                console.log(`Generated ID: ${invitationId}`);
+                
+                // Đảm bảo URL gọi API đúng
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec';
+                console.log(`API URL: ${scriptUrl}`);
+                
+                // Tạo body request
+                const requestBody = `action=saveInvitation&id=${invitationId}&name=${encodeURIComponent(guestName)}`;
+                console.log(`Request body: ${requestBody}`);
+                
+                // Gọi API
+                const response = await fetch(scriptUrl, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: `action=saveInvitation&id=${invitationId}&name=${encodeURIComponent(guestName)}`
+                    body: requestBody
                 });
                 
                 console.log("Response received");
-                const invitationLink = `${baseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
+                
+                // Tạo link thiệp mời
+                // Đảm bảo baseUrl có định dạng đúng
+                const validBaseUrl = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
+                const invitationLink = `${validBaseUrl}index.html?id=${invitationId}&name=${encodeURIComponent(guestName)}`;
+                console.log(`Generated invitation link: ${invitationLink}`);
+                
                 document.getElementById('invitationLink').value = invitationLink;
                 document.getElementById('resultContainer').style.display = 'block';
             } catch (error) {
