@@ -60,8 +60,14 @@
         <button class="copy-button" onclick="copyLink()">Sao chép</button>
     </div>
 
+    <form id="submitForm" target="hidden-iframe" method="POST" action="https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec" style="display:none;">
+        <input type="hidden" name="id" id="form-id">
+        <input type="hidden" name="name" id="form-name">
+    </form>
+    <iframe name="hidden-iframe" style="display:none;"></iframe>
+
     <script>
-        async function generateLink() {
+        function generateLink() {
             const name = document.getElementById('name').value;
             if (!name) {
                 alert('Vui lòng nhập tên');
@@ -70,46 +76,15 @@
 
             const id = generateRandomId();
             
-            try {
-                // Sử dụng XMLHttpRequest thay vì fetch
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'https://script.google.com/macros/s/AKfycbwaOVvXuQJStF3uc90y28UB9MEr5LlZZfQDI-cFhXQTxGGMdqiH3_hbSEsVRl-wbiCE/exec', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                
-                xhr.onload = function() {
-                    if (xhr.status === 200) {
-                        try {
-                            const result = JSON.parse(xhr.responseText);
-                            if (result.error) {
-                                throw new Error(result.error);
-                            }
-                            
-                            // Nếu lưu thành công, tạo link
-                            const baseUrl = 'https://graduation-virid.vercel.app/';
-                            const invitationLink = `${baseUrl}index.html?id=${id}&name=${encodeURIComponent(name)}`;
-                            document.getElementById('invitationLink').value = invitationLink;
-                            document.getElementById('linkContainer').style.display = 'block';
-                        } catch (error) {
-                            alert('Có lỗi xảy ra khi xử lý dữ liệu: ' + error.message);
-                        }
-                    } else {
-                        alert('Có lỗi xảy ra khi gửi dữ liệu');
-                    }
-                };
-                
-                xhr.onerror = function() {
-                    alert('Có lỗi kết nối đến server');
-                };
-                
-                xhr.send(JSON.stringify({
-                    id: id,
-                    name: name
-                }));
-                
-            } catch (error) {
-                alert('Có lỗi xảy ra: ' + error.message);
-                console.error('Error:', error);
-            }
+            document.getElementById('form-id').value = id;
+            document.getElementById('form-name').value = name;
+            
+            const baseUrl = 'https://graduation-virid.vercel.app/';
+            const invitationLink = `${baseUrl}index.html?id=${id}&name=${encodeURIComponent(name)}`;
+            document.getElementById('invitationLink').value = invitationLink;
+            document.getElementById('linkContainer').style.display = 'block';
+            
+            document.getElementById('submitForm').submit();
         }
 
         function generateRandomId() {
