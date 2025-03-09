@@ -47,28 +47,257 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
-            const name = urlParams.get('name');
             
-            const guestName = urlParams.get('name');
-            if (guestName) {
-                function updateGuestName() {
-                    console.log("Đang cập nhật tên khách:", guestName);
-                    const invitationElement = document.getElementById('invitation') || 
-                                             document.querySelector('.guest_name') ||
-                                             document.querySelector('[data-id="invitation"]');
-                    if (invitationElement) {
-                        invitationElement.textContent = decodeURIComponent(guestName);
-                        invitationElement.style.display = 'block';
-                        console.log("Đã cập nhật tên khách thành công");
-                    } else {
-                        console.log("Không tìm thấy element 'invitation' - thử lại sau 500ms");
-                        setTimeout(updateGuestName, 500);
+            // Nếu không có ID, chuyển hướng sang trang tạo thiệp
+            if (!id) {
+                window.location.href = 'create-invitation.html';
+                return;
+            }
+
+            // Nếu có ID, tiếp tục load các section
+            loadSection('section-popup-qr', 'sections/popup-qr.html');
+            loadSection('section-loading', 'sections/loading.html');
+            loadSection('section-banner', 'sections/banner.html');
+            loadSection('section-location', 'sections/location.html');
+            loadSection('section-bio', 'sections/bio.html');
+            loadSection('section-journey', 'sections/journey.html');
+            loadSection('section-gallery', 'sections/gallery.html');
+            loadSection('section-event', 'sections/event.html');
+            loadSection('section-footer', 'sections/footer.html');
+            loadSection('section-donate-button', 'sections/donate-button.html');
+        });
+
+        // Thêm hàm kiểm tra URL khi thay đổi
+        window.addEventListener('popstate', checkUrl);
+        window.addEventListener('hashchange', checkUrl);
+
+        function checkUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            
+            if (!id) {
+                window.location.href = 'create-invitation.html';
+            }
+        }
+
+        function loadSection(sectionId, filePath) {
+            fetch(filePath)
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById(sectionId).innerHTML = html;
+                })
+                .catch(error => {
+                    console.error(`Error loading section ${sectionId}:`, error);
+                });
+        }
+        var splide = null;
+        var isthamdu = true;
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function() {
+                splide = new Splide('.splide', {
+                    type: 'slide',
+                    perPage: 1,
+                    perMove: 1,
+                    start: 1
+                });
+                splide.mount();
+                initializeScripts();
+            }, 1000); 
+        });
+        function initializeScripts() {
+            var countDownDate = new Date("Jun 1, 2025 10:30:00").getTime();
+            var x = setInterval(function () {
+                var now = new Date().getTime();
+                var distance = countDownDate - now;
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                if (document.getElementById("countday")) {
+                    document.getElementById("countday").innerHTML = days;
+                    document.getElementById("counthour").innerHTML = hours;
+                    document.getElementById("countmin").innerHTML = minutes;
+                    document.getElementById("countsecond").innerHTML = seconds;
+                }
+                if (distance < 0) {
+                    clearInterval(x);
+                    if (document.getElementById("countday")) {
+                        document.getElementById("countday").innerHTML = 0;
+                        document.getElementById("counthour").innerHTML = 0;
+                        document.getElementById("countmin").innerHTML = 0;
+                        document.getElementById("countsecond").innerHTML = 0;
                     }
                 }
-                updateGuestName();
-                window.addEventListener('load', updateGuestName);
+            }, 1000);
+            setTimeout(() => {
+                if (document.querySelector('.pageMain')) {
+                    document.querySelector('.pageMain').style.display = 'block';
+                    document.querySelector('.pageMain').style.overflow = 'auto';
+                }
+                if (document.getElementById('loading')) {
+                    document.getElementById('loading').remove();
+                }
+                document.body.style.pointerEvents = 'auto';
+                if (document.querySelector('#input_name')) {
+                    document.querySelector('#input_name').addEventListener('input', () => {
+                        document.getElementById('sendDataSubmit').classList.remove("inactive");
+                    });
+                }
+                window.addEventListener("scroll", reveal);
+                reveal();
+            }, 1888);
+        }
+        function closePopup(event) {
+            if (event != null && event.target.localName != 'div') {
+                return;
             }
-        });
+            enableScroll();
+            document.querySelector('#dialog-previewImage').style.display = 'none';
+        }
+        function openPopup(index) {
+            let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            let arr1 = arr.splice(index, 12 - index);
+            let arr2 = arr1.concat(arr);
+            if (splide) {
+            splide.go(`-1`);
+            let listSlide = document.querySelectorAll('.listIMG');
+            listSlide.forEach(function (item, i) {
+                    item.src = `./assets/img/theme/lephuongha/lephuongha${arr2[i]}.jpg`;
+            });
+            document.querySelector('#dialog-previewImage').style.display = 'flex';
+            disableScroll();
+            }
+        }
+        function clickoption(value) {
+            isthamdu = (value == 1);
+            document.querySelector(`#count`).style.display = (value == 1) ? 'block' : 'none';
+            document.querySelector(`#phuongtien`).style.display = (value == 1) ? 'block' : 'none';
+            document.querySelector(`#option${value}`).classList.add('checked');
+            document.querySelector(`#option${value == 2 ? 1 : 2}`).classList.remove('checked');
+        }
+        function sendData() {
+            document.getElementById('loading2').style.display = 'flex';
+            document.body.style.pointerEvents = 'none';
+            disableScroll();
+            let name = document.querySelector('#input_name').value;
+            if (!name || name.trim() === '') {
+                alert('Vui lòng nhập tên của bạn!');
+                document.getElementById('loading2').style.display = 'none';
+                document.body.style.pointerEvents = 'auto';
+                enableScroll();
+                return;
+            }
+            let songuoi = parseInt(document.querySelector('#id_field_sl').value);
+            let phuongtien = parseInt(document.querySelector('#id_field_pt').value);
+            let url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?`;
+            if (isthamdu) {
+                url += `name_km=${encodeURIComponent(name)}&tham_gia=X&count=${songuoi}&phuong_tien=${encodeURIComponent(phuongtien == 1 ? 'X' : 'O')}&time_send=${encodeURIComponent((new Date()).toString())}`;
+            } else {
+                url += `name_km=${encodeURIComponent(name)}&tham_gia=O&time_send=${encodeURIComponent((new Date()).toString())}`;
+            }
+            fetch(url)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response;
+                })
+                .then(function () {
+                    document.getElementById('loading2').style.display = 'none';
+                    document.body.style.pointerEvents = 'auto';
+                    enableScroll();
+                    alert('Cảm ơn bạn đã phản hồi! Thông tin đã được lưu.');
+                    document.querySelector('#input_name').value = '';
+                    document.getElementById('sendDataSubmit').classList.add("inactive");
+                })
+                .catch(function (error) {
+                    console.error('Error submitting form:', error);
+                    document.getElementById('loading2').style.display = 'none';
+                    document.body.style.pointerEvents = 'auto';
+                    enableScroll();
+                    alert('Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại sau!');
+                });
+        }
+        function reveal() {
+            var reveals = document.querySelectorAll(".revealAnimation");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 120;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active-Animation");
+                } else {
+                    reveals[i].classList.remove("active-Animation");
+                }
+            }
+        }
+        function onReady(callback) {
+            var intervalId = window.setInterval(function () {
+                if (document.getElementsByTagName('body')[0] !== undefined) {
+                    window.clearInterval(intervalId);
+                    callback.call(this);
+            }
+        }, 1000);
+        }
+        function showDialogDonate() {
+            if (document.querySelector(`#popupQR`)) {
+            document.querySelector(`#popupQR`).style.display = 'flex';
+            disableScroll();
+            document.body.style.pointerEvents = 'none';
+            }
+        }
+        function hideDialogDonate() {
+            if (document.querySelector(`#popupQR`)) {
+            document.querySelector(`#popupQR`).style.display = 'none';
+            enableScroll();
+            document.body.style.pointerEvents = 'auto';
+        }
+        }
+        function disableScroll() {
+            document.body.style.overflowY = 'hidden';
+            document.querySelector(`html`).style.overflowY = 'hidden';
+            document.body.addEventListener('touchmove', preventDefault, { passive: false });
+        }
+        function enableScroll() {
+            document.body.style.overflowY = 'auto';
+            document.querySelector(`html`).style.overflowY = 'auto';
+            document.body.removeEventListener('touchmove', preventDefault);
+        }
+        function preventDefault(e) {
+            e.preventDefault();
+        }
+        window.onload = async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const invitationId = urlParams.get('id');
+            if (invitationId) {
+                try {
+                    const url = `https://script.google.com/macros/s/AKfycbwTqErwj6kw6itpByj9RPBCx2yn0vOOS8PBhpRRRZwy0zwEuL9GLZTztURTt9FG0Hc/exec?action=getInvitation&id=${invitationId}`;
+                    const response = await fetch(url);
+                    const data = await response.json();
+                    if (data && data.name) {
+                        const elements = document.getElementsByTagName('*');
+                        for (let element of elements) {
+                            if (element.childNodes.length > 0) {
+                                for (let node of element.childNodes) {
+                                    if (node.nodeType === 3) {
+                                        const text = node.nodeValue;
+                                        if (text.includes('{{guest_name}}')) {
+                                            node.nodeValue = text.replace('{{guest_name}}', data.name);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        document.querySelectorAll('[data-id="invitation"]').forEach(element => {
+                            element.textContent = data.name;
+                            element.style.display = 'block';
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching invitation:', error);
+                }
+            }
+        }
     </script>
 </head>
 <body style="pointerEvents: none;">
